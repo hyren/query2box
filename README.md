@@ -1,4 +1,7 @@
 # Query2box
+
+**A new and more modularized implementation can be found at [here](https://github.com/snap-stanford/KGReasoning)**
+
 Official implementation of [Query2box: Reasoning over Knowledge Graphs in Vector Space Using Box Embeddings](https://openreview.net/forum?id=BJgr4kSFDS).
 
 [Hongyu Ren*](http://hyren.me), [Weihua Hu*](http://web.stanford.edu/~weihuahu/), [Jure Leskovec](https://cs.stanford.edu/people/jure/index.html), ICLR 2020.
