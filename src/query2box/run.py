@@ -13,10 +13,11 @@ import random
 import numpy as np
 import torch
 
+from tqdm import tqdm, trange
 from torch.utils.data import DataLoader
 
-from model import Query2box
-from dataloader import *
+from query2box.model import Query2box
+from query2box.dataloader import *
 from tensorboardX import SummaryWriter
 import time
 import pickle
@@ -172,8 +173,11 @@ def log_metrics(mode, step, metrics):
     '''
     for metric in metrics:
         logging.info('%s %s at step %d: %f' % (mode, metric, step, metrics[metric]))
-        
-def main(args):
+
+def main():
+    main_helper(parse_args())
+
+def main_helper(args):
     set_global_seed(args.seed)
     args.test_batch_size = 1
     assert args.bn in ['no', 'before', 'after']
@@ -500,7 +504,7 @@ def main(args):
             num_params += np.prod(param.size())
     logging.info('Parameter Number: %d' % num_params)
 
-    if args.cuda:
+    if args.cuda and torch.cuda.is_available():
         query2box = query2box.cuda()
     
     if args.do_train:
@@ -825,7 +829,7 @@ def main(args):
         else:
             begin_pq_step = args.max_steps - args.stepsforpath
         #Training Loop
-        for step in range(init_step, args.max_steps):
+        for step in trange(init_step, args.max_steps, desc='Training', unit='step', unit_scale=True):
             # print ("begining training step", step)
             # if step == 100:
             #     exit(-1)
@@ -901,7 +905,7 @@ def main(args):
                 training_logs = []
             
             if args.do_valid and step % args.valid_steps == 0:
-                logging.info('Evaluating on Valid Dataset...')
+                tqdm.write('Evaluating on Valid Dataset...')
                 evaluate_val()
 
         save_variable_list = {
@@ -933,4 +937,4 @@ def main(args):
 
 
 if __name__ == '__main__':
-    main(parse_args())
+    main()

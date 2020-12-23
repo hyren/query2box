@@ -10,10 +10,11 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
-from dataloader import *
+from query2box.dataloader import *
 import random
 import pickle
 import math
+
 def Identity(x):
     return x
 
